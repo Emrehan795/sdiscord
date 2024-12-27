@@ -11,15 +11,15 @@
 <body>
     <nav>
         <div class="nav-left">
-            <a href="{{ url_for('ana_sayfa') }}">
+            <a href="{{ url_for('index') }}">
                 <img src="{{ url_for('static', filename='img/logo.png') }}" alt="SitWatch Logo" class="logo">
             </a>
-            <a href="{{ url_for('ana_sayfa') }}">Ana Sayfa</a>
+            <a href="{{ url_for('index') }}">Ana Sayfa</a>
             <a href="{{ url_for('trendler') }}">Trendler</a>
         </div>
         <div class="nav-right">
             {% if 'user_id' in session %}
-                <a href="{{ url_for('yukle') }}" class="kayit-ol">Video Yükle</a>
+                <a href="{{ url_for('yukle') }}" class="upload-btn">Video Yükle</a>
                 <a href="{{ url_for('cikis') }}">Çıkış Yap</a>
             {% else %}
                 <a href="{{ url_for('giris') }}">Giriş Yap</a>
@@ -28,24 +28,18 @@
         </div>
     </nav>
 
-    <div class="video-container">
+    <div class="content">
         <div class="video-player">
-            <video src="{{ url_for('static', filename=video.video_url) }}" controls width="100%"></video>
-            <div class="video-info">
-                <h1>{{ video.baslik }}</h1>
-                <div class="video-meta">
-                    <span>{{ video.goruntuleme }} görüntüleme</span>
-                    <span>{{ video.yuklenme_tarihi.strftime('%d.%m.%Y') }}</span>
-                </div>
-                <div class="channel-info">
-                    <span class="material-icons">account_circle</span>
-                    <span>{{ video.kullanici }}</span>
-                </div>
-                <div class="video-description">
-                    {{ video.aciklama }}
-                </div>
-            </div>
+            <video controls>
+                <source src="{{ url_for('static', filename=video.video_url) }}" type="video/mp4">
+                Tarayıcınız video oynatmayı desteklemiyor.
+            </video>
+            <h1>{{ video.baslik }}</h1>
+            <p class="views">{{ video.goruntuleme }} görüntülenme</p>
+            <p class="description">{{ video.aciklama }}</p>
         </div>
     </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
