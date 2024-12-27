@@ -22,8 +22,15 @@ VIDEOS = [
     }
 ]
 
-def index(request):
+@app.route('/')
+def index():
     try:
-        return "Hello from Vercel!"
+        return render_template('index.html', videolar=VIDEOS)
     except Exception as e:
         return f"Error: {str(e)}"
+
+@app.route('/test')
+def test():
+    return "Test page works!"
+
+app.jinja_env.globals.update(url_for=lambda *args, **kwargs: '/')
