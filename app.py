@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+import os
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -23,7 +24,13 @@ VIDEOS = [
 
 @app.route('/')
 def index():
-    return render_template('index.html', videolar=VIDEOS)
+    try:
+        template_path = os.path.join(os.path.dirname(__file__), 'templates', 'index.html')
+        if not os.path.exists(template_path):
+            return f"Template not found at {template_path}"
+        return render_template('index.html', videolar=VIDEOS)
+    except Exception as e:
+        return f"Error: {str(e)}"
 
 @app.route('/test')
 def test():
