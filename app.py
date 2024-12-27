@@ -6,9 +6,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'gizli_anahtar_123'
-app.config['SERVER_NAME'] = 'sdiscord.site'  # Domain adınızı buraya yazın
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SECRET_KEY'] = 'your-secret-key'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///videos.db'
+app.config['SERVER_NAME'] = 'sdiscord.site'
+app.config['PREFERRED_URL_SCHEME'] = 'https'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max
 ALLOWED_EXTENSIONS = {'mp4', 'webm', 'jpg', 'jpeg', 'png'}
@@ -196,4 +197,4 @@ def init_db():
 
 if __name__ == '__main__':
     init_db()
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    app.run()
