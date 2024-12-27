@@ -11,15 +11,15 @@
 <body>
     <nav>
         <div class="nav-left">
-            <a href="{{ url_for('ana_sayfa') }}">
+            <a href="{{ url_for('index') }}">
                 <img src="{{ url_for('static', filename='img/logo.png') }}" alt="SitWatch Logo" class="logo">
             </a>
-            <a href="{{ url_for('ana_sayfa') }}">Ana Sayfa</a>
+            <a href="{{ url_for('index') }}">Ana Sayfa</a>
             <a href="{{ url_for('trendler') }}">Trendler</a>
         </div>
         <div class="nav-right">
             {% if 'user_id' in session %}
-                <a href="{{ url_for('yukle') }}" class="kayit-ol">Video Yükle</a>
+                <a href="{{ url_for('yukle') }}" class="upload-btn">Video Yükle</a>
                 <a href="{{ url_for('cikis') }}">Çıkış Yap</a>
             {% else %}
                 <a href="{{ url_for('giris') }}">Giriş Yap</a>
@@ -28,23 +28,23 @@
         </div>
     </nav>
 
-    <div class="videos">
-        {% for video in videolar %}
-        <a href="{{ url_for('izle', video_id=video.id) }}" class="video-card">
-            <div class="thumbnail">
-                <img src="{{ video.thumbnail_url }}" alt="{{ video.baslik }}">
-                <span class="duration">{{ video.sure }}</span>
+    <div class="content">
+        <div class="video-grid">
+            {% for video in videolar %}
+            <div class="video-card">
+                <a href="{{ url_for('izle', video_id=video.id) }}">
+                    <img src="{{ video.thumbnail_url }}" alt="{{ video.baslik }}" class="thumbnail">
+                    <div class="video-info">
+                        <h3>{{ video.baslik }}</h3>
+                        <p>{{ video.aciklama }}</p>
+                        <p class="views">{{ video.goruntuleme }} görüntülenme</p>
+                    </div>
+                </a>
             </div>
-            <div class="info">
-                <h3>{{ video.baslik }}</h3>
-                <p class="channel">{{ video.kullanici }}</p>
-                <p class="meta">
-                    {{ video.goruntuleme }} görüntüleme • 
-                    {{ video.yuklenme_tarihi.strftime('%d.%m.%Y') }}
-                </p>
-            </div>
-        </a>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
