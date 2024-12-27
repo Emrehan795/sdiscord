@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
@@ -8,8 +8,6 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///videos.db'
-app.config['SERVER_NAME'] = 'sdiscord.site'
-app.config['PREFERRED_URL_SCHEME'] = 'https'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max
 ALLOWED_EXTENSIONS = {'mp4', 'webm', 'jpg', 'jpeg', 'png'}
@@ -45,9 +43,9 @@ class Video(db.Model):
     kullanici_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 @app.route('/')
-def ana_sayfa():
-    videolar = Video.query.order_by(Video.yuklenme_tarihi.desc()).all()
-    return render_template('index.html', videolar=videolar)
+def index():
+    videos = Video.query.order_by(Video.goruntuleme.desc()).limit(10).all()
+    return render_template('index.html', videos=videos)
 
 @app.route('/trendler')
 def trendler():
@@ -128,7 +126,7 @@ def giris():
         if user and user.check_password(password):
             session['user_id'] = user.id
             flash('Başarıyla giriş yaptınız!')
-            return redirect(url_for('ana_sayfa'))
+            return redirect(url_for('index'))
             
         flash('Kullanıcı adı veya şifre hatalı.')
         return redirect(url_for('giris'))
@@ -164,37 +162,9 @@ def kayit():
 def cikis():
     session.pop('user_id', None)
     flash('Başarıyla çıkış yaptınız.')
-    return redirect(url_for('ana_sayfa'))
-
-# Veritabanını başlat ve örnek veri ekle
-def init_db():
-    with app.app_context():
-        # Upload klasörünü oluştur
-        if not os.path.exists(app.config['UPLOAD_FOLDER']):
-            os.makedirs(app.config['UPLOAD_FOLDER'])
-        
-        # Tabloları oluştur
-        db.create_all()
-        
-        # Örnek kullanıcı ekle
-        if not User.query.first():
-            admin = User(username='admin', email='admin@sdiscord.site')
-            admin.set_password('admin123')
-            db.session.add(admin)
-            db.session.commit()
-            
-            # Örnek video ekle
-            if not Video.query.first():
-                ornek_video = Video(
-                    baslik='Hoş Geldiniz',
-                    aciklama='SitWatch\'a hoş geldiniz!',
-                    video_url='static/video/ornek.mp4',
-                    kullanici='admin',
-                    kullanici_id=admin.id
-                )
-                db.session.add(ornek_video)
-                db.session.commit()
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    init_db()
+    with app.app_context():
+        db.create_all()
     app.run()
