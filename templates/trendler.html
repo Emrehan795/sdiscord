@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trendler - SitWatch</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <a href="{{ url_for('ana_sayfa') }}">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="SitWatch Logo" class="logo">
+            </a>
+            <a href="{{ url_for('ana_sayfa') }}">Ana Sayfa</a>
+            <a href="{{ url_for('trendler') }}">Trendler</a>
+        </div>
+        <div class="nav-right">
+            {% if 'user_id' in session %}
+                <a href="{{ url_for('yukle') }}" class="kayit-ol">Video Yükle</a>
+                <a href="{{ url_for('cikis') }}">Çıkış Yap</a>
+            {% else %}
+                <a href="{{ url_for('giris') }}">Giriş Yap</a>
+                <a href="{{ url_for('kayit') }}" class="kayit-ol">Kayıt Ol</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="videos">
+        {% for video in videolar %}
+        <a href="{{ url_for('izle', video_id=video.id) }}" class="video-card">
+            <div class="thumbnail">
+                <img src="{{ video.thumbnail_url }}" alt="{{ video.baslik }}">
+                <span class="duration">{{ video.sure }}</span>
+            </div>
+            <div class="info">
+                <h3>{{ video.baslik }}</h3>
+                <p class="channel">{{ video.kullanici }}</p>
+                <p class="meta">
+                    {{ video.goruntuleme }} görüntüleme • 
+                    {{ video.yuklenme_tarihi.strftime('%d.%m.%Y') }}
+                </p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</body>
+</html>
