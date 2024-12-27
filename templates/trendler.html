@@ -1,51 +1,24 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trendler - SitWatch</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
+    <h1>SitWatch - Trendler</h1>
     <nav>
-        <div class="nav-left">
-            <a href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="SitWatch Logo" class="logo">
-            </a>
-            <a href="{{ url_for('index') }}">Ana Sayfa</a>
-            <a href="{{ url_for('trendler') }}">Trendler</a>
-        </div>
-        <div class="nav-right">
-            {% if 'user_id' in session %}
-                <a href="{{ url_for('yukle') }}" class="upload-btn">Video Yükle</a>
-                <a href="{{ url_for('cikis') }}">Çıkış Yap</a>
-            {% else %}
-                <a href="{{ url_for('giris') }}">Giriş Yap</a>
-                <a href="{{ url_for('kayit') }}" class="kayit-ol">Kayıt Ol</a>
-            {% endif %}
-        </div>
+        <a href="{{ url_for('index') }}">Ana Sayfa</a>
+        <a href="{{ url_for('trendler') }}">Trendler</a>
     </nav>
-
-    <div class="content">
-        <h1>Trend Videolar</h1>
-        <div class="video-grid">
-            {% for video in videolar %}
-            <div class="video-card">
-                <a href="{{ url_for('izle', video_id=video.id) }}">
-                    <img src="{{ video.thumbnail_url }}" alt="{{ video.baslik }}" class="thumbnail">
-                    <div class="video-info">
-                        <h3>{{ video.baslik }}</h3>
-                        <p>{{ video.aciklama }}</p>
-                        <p class="views">{{ video.goruntuleme }} görüntülenme</p>
-                    </div>
-                </a>
-            </div>
-            {% endfor %}
+    
+    <div>
+        {% for video in videolar %}
+        <div>
+            <h2>{{ video.baslik }}</h2>
+            <p>{{ video.aciklama }}</p>
+            <p>{{ video.goruntuleme }} görüntülenme</p>
+            <a href="{{ url_for('izle', video_id=video.id) }}">İzle</a>
         </div>
+        {% endfor %}
     </div>
-
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

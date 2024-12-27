@@ -1,41 +1,18 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Yükle - SitWatch</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
+    <h1>SitWatch - Video Yükle</h1>
     <nav>
-        <div class="nav-left">
-            <a href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="SitWatch Logo" class="logo">
-            </a>
-            <a href="{{ url_for('index') }}">Ana Sayfa</a>
-            <a href="{{ url_for('trendler') }}">Trendler</a>
-        </div>
-        <div class="nav-right">
-            {% if 'user_id' in session %}
-                <a href="{{ url_for('cikis') }}">Çıkış Yap</a>
-            {% else %}
-                <a href="{{ url_for('giris') }}">Giriş Yap</a>
-                <a href="{{ url_for('kayit') }}" class="kayit-ol">Kayıt Ol</a>
-            {% endif %}
-            <a href="{{ url_for('yukle') }}" class="upload-btn">Video Yükle</a>
-        </div>
+        <a href="{{ url_for('index') }}">Ana Sayfa</a>
+        <a href="{{ url_for('trendler') }}">Trendler</a>
     </nav>
-
-    <div class="content">
-        <div class="upload-form">
-            <h1>Video Yükle</h1>
-            <p>Video yükleme özelliği şu anda devre dışı.</p>
-            <a href="{{ url_for('index') }}" class="btn">Ana Sayfaya Dön</a>
-        </div>
+    
+    <div>
+        <p>Video yükleme özelliği şu anda devre dışı.</p>
+        <a href="{{ url_for('index') }}">Ana Sayfaya Dön</a>
     </div>
-
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
