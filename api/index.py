@@ -1,8 +1,7 @@
 from flask import Flask, render_template
-import os
+from http.server import BaseHTTPRequestHandler
 
 app = Flask(__name__)
-app.config['DEBUG'] = True
 
 # Örnek videolar
 VIDEOS = [
@@ -22,15 +21,24 @@ VIDEOS = [
     }
 ]
 
-@app.route('/')
-def index():
-    try:
-        return render_template('index.html', videolar=VIDEOS)
-    except Exception as e:
-        return f"Error: {str(e)}"
-
-@app.route('/test')
-def test():
-    return "Test page works!"
-
-app.jinja_env.globals.update(url_for=lambda *args, **kwargs: '/')
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        try:
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            
+            if self.path == '/':
+                response = render_template('index.html', videolar=VIDEOS)
+            elif self.path == '/test':
+                response = 'Test page works!'
+            else:
+                response = '404 Not Found'
+            
+            self.wfile.write(response.encode())
+            return
+        except Exception as e:
+            self.send_response(500)
+            self.send_header('Content-type', 'text/plain')
+            self.end_headers()
+            self.wfile.write(str(e).encode())
