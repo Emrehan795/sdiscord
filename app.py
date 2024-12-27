@@ -1,24 +1,23 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for
 import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key'
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max
 
+# Örnek videolar
 VIDEOS = [
     {
         'id': 1,
         'baslik': 'Örnek Video 1',
         'aciklama': 'Bu bir örnek videodur',
-        'video_url': 'https://example.com/video1.mp4',
+        'video_url': '/static/videos/video1.mp4',
         'goruntuleme': 100
     },
     {
         'id': 2,
         'baslik': 'Örnek Video 2',
         'aciklama': 'Bu başka bir örnek videodur',
-        'video_url': 'https://example.com/video2.mp4',
+        'video_url': '/static/videos/video2.mp4',
         'goruntuleme': 200
     }
 ]
@@ -41,7 +40,6 @@ def izle(video_id):
 @app.route('/yukle', methods=['GET', 'POST'])
 def yukle():
     if request.method == 'POST':
-        flash('Video yükleme şu anda devre dışı')
         return redirect(url_for('index'))
     return render_template('yukle.html')
 
